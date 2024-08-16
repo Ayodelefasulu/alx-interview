@@ -4,31 +4,21 @@ lockboxes
 """
 
 
-from typing import List
-
-
-def canUnlockAll(boxes: List[List[int]]) -> bool:
-    """
-    Determine if all boxes can be unlocked starting from box 0.
-
-    Args:
-        boxes (List[List[int]]): A list of lists where each inner
-                                 list represents the keys in that box.
-
-    Returns:
-        bool: True if all boxes can be opened, False otherwise.
-    """
-    n = len(boxes)
+def canUnlockAll(boxes):
+    # Initialize a set to keep track of visited boxes
     visited = set()
-    queue = [0]  # Start with box 0
+    visited.add(0)  # Mark the initial box as visited
+    stack = [0]  # Initialize a stack with the initial box
 
-    while queue:
-        box = queue.pop(0)
-        if box in visited:
-            continue
-        visited.add(box)
-        for key in boxes[box]:
-            if key < n and key not in visited:
-                queue.append(key)
+    while stack:
+        current_box = stack.pop()  # Get the top box from the stack
+        keys = boxes[current_box]  # Get the keys in the current box
 
-    return len(visited) == n
+        for key in keys:
+            if key not in visited:
+                visited.add(key)  # Mark the box as visited
+                stack.append(key)  # Add the box to the stack
+
+    # Check if all boxes have been visited
+    return len(visited) == len(boxes)
+
