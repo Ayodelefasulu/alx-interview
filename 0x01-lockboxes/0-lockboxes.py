@@ -1,28 +1,37 @@
 #!/usr/bin/python3
-''' lockbox module '''
+"""Lockbox module"""
 
 
 def canUnlockAll(boxes):
-    '''
-        CanUnockAll
-        ([boxes]): a list of list
-    '''
+    """
+    Determines if all boxes can be unlocked.
 
-    # initialize a list of unlocked boxes
+    Args:
+        boxes (list): A list of lists, where each sublist represents
+                      a box and contains the keys to other boxes.
+
+    Returns:
+        bool: True if all boxes can be opened, else False.
+    """
+
+    # Initialize a list of unlocked boxes
     unlocked = [False] * len(boxes)
-    # set the first box oprn
+    # Set the first box open
     unlocked[0] = True
-    # iterate over the boxes
+
+    # Iterate over the boxes
     for index, box in enumerate(boxes):
-        # check if the box is unlocked
+        # Check if the box is unlocked
         if unlocked[index]:
-            # get the keys in the box
-            for index, key in enumerate(box):
-                # set the box with a found key to open
+            # Get the keys in the box
+            for key in box:
+                # Set the box with a found key to open
                 if key < len(unlocked):
                     unlocked[key] = True
-                    # get the keys at the box that has been opened
-                    # set the boxes with the keys to be open
+                    # Get the keys at the box that has been opened
+                    # Set the boxes with the keys to be open
                     for i in boxes[key]:
-                        unlocked[i] = True
+                        if i < len(unlocked):
+                            unlocked[i] = True
+
     return all(unlocked)
