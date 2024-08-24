@@ -6,7 +6,8 @@ minOperations module
 
 def minOperations(n):
     """
-    Calculates the minimum number of operations required to result in exactly n H characters in the file.
+    Calculates the minimum number of operations required
+    to result in exactly n H characters in the file.
 
     Args:
         n (int): The target number of H characters.
