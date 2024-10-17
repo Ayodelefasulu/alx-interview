@@ -1,45 +1,45 @@
 #!/usr/bin/python3
 """
-This is the prime game module
+Module to determine the winner of the prime game.
 """
 
 
 def isWinner(x, nums):
     """
-    Determines the winner of the prime game.
+    Determines the winner of the prime number game after x rounds.
 
     Args:
         x (int): The number of rounds.
-        nums (list): An array of n, where n is the upper bound
-            of consecutive integers for each round.
+        nums (list): List of integers representing n for each round.
 
     Returns:
-        str: The name of the player who won the most rounds,
-            or None if the winner cannot be determined.
+        str: Name of the player who won the most rounds ("Maria" or "Ben").
+             If there's no clear winner, return None.
     """
-    def is_prime(n):
-        """Helper function to check if a number is prime."""
-        if n < 2:
-            return False
-        for i in range(2, int(n**0.5) + 1):
-            if n % i == 0:
-                return False
-        return True
+    if x < 1 or not nums:
+        return None
 
-    def count_primes(n):
-        """Helper function to count the number of prime numbers up to n."""
-        count = 0
-        for i in range(2, n + 1):
-            if is_prime(i):
-                count += 1
-        return count
+    max_n = max(nums)
+
+    # Sieve of Eratosthenes to find all primes up to max_n
+    primes = [True] * (max_n + 1)
+    primes[0] = primes[1] = False
+
+    for i in range(2, int(max_n ** 0.5) + 1):
+        if primes[i]:
+            for multiple in range(i * i, max_n + 1, i):
+                primes[multiple] = False
+
+    # Count prime moves
+    prime_moves = [0] * (max_n + 1)
+    for i in range(1, max_n + 1):
+        prime_moves[i] = prime_moves[i - 1] + (1 if primes[i] else 0)
 
     maria_wins = 0
     ben_wins = 0
 
     for n in nums:
-        primes_count = count_primes(n)
-        if primes_count % 2 == 0:
+        if prime_moves[n] % 2 == 0:
             ben_wins += 1
         else:
             maria_wins += 1
